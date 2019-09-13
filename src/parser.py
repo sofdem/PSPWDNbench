@@ -275,16 +275,9 @@ def create_objects(instance_file):
     # print(len(tariff_values))
     # print(isinstance(profiles["domestic"], Profile))
     # print(isinstance(tariffs["tariff_ELIX"], Tariff))
-    # print(type(sources["Bache_O"].Max_wd))
-    # print(sources["Bache_O"].Max_wd)
-    # print(sources["Bache_O"].Max_wd > 10**15)
-    # print(isinstance(nodes["Bache_O"], Node))
-    # print(isinstance(arcs["v1"], Arc))
-    # print(type(pipes_set["T30"].Diameter))
-    # print(pipes_set["T30"].Diameter)
-    # print(isinstance(pipes_set["T30"], Pipe))
 
-    # return nodes, arcs, timeseries
+
+    #code à compléter pour générer des output.
 
 
 def main():
