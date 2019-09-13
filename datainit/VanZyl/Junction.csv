@@ -1,0 +1,14 @@
+#Junction;NODE_ID;X_COORDINATE;Y_COORDINATE;Z_COORDINATE;TIMESERIE_ID;Water_dem_base;Max_P
+Junction; n1              ;0;0;10;domestic;0;100.0
+Junction; n10             ;0;0;100;domestic;0;100.0
+Junction; n12             ;0;0;100;domestic;0;100.0
+Junction; n11             ;0;0;100;domestic;0;100.0
+Junction; n13             ;0;0;100;domestic;0;100.0
+Junction; n2              ;0;0;10;domestic;0;100.0
+Junction; n3              ;0;0;75;domestic;0;100.0
+Junction; n361            ;0;0;100;domestic;0;100.0
+Junction; n361b      ;0;0;100;domestic;0;100.0
+Junction; n362            ;0;0;100;domestic;0;100.0
+Junction; n364            ;0;0;100;domestic;0;100.0
+Junction; n365            ;0;0;100;domestic;0;100.0
+Junction; n5              ;0;0;30;domestic;150;100.0

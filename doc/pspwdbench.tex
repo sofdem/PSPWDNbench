@@ -1,0 +1,247 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{eurosym}
+
+
+\title{Mathematical formulation of the pump scheduling probleme as a MINLP}
+\author{Gratien Bonvin}
+\date{Montréal, 22 janvier 2018}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Notations and variables}
+~~~ A water network can be mathematically described as a directed graph
+$G=(N,A)$ :
+
+~~ -the nodes N are divided into tanks nodes ${N}_{T}$, sources nodes ${N}_{S}$ and
+~~ junctions nodes ${N}_{J}$
+
+~~ -the arcs $A$ are either pumps $K$, valves $V$ or pipes $L$
+
+Because both the water demand and electricity tariffs often fluctuate on
+a daily basis, the scheduling horizon is most commonly limited to 24 hours.
+This time interval is divided in $T$ periods of length $\tau_t$ (in hours) during
+which we consider that
+ows and pressures are in a steady state.
+
+We define two sets of implied variables, the
+flow rate qat (in $m^{3}/h$) and the
+hydraulic head hnt (in $m$), respectively defined as the water
+flowing through
+arcs $a \in A$ and the sum of the geographical elevation and the water pressure
+head at node $n \in N$ during period $t$. In the following, we summarize how to
+model the physical assets and we define the decision variables.
+
+
+
+
+\section{Modeling physical assets}
+\subsection{Pipes}
+
+~~~~~~ Friction head losses are well-approximated by the Hazen-Williams or
+Darcy-Weisbach formulae. Because they are difficult to handle in a optimisation
+framework, sufficiently accurate quadratic approximations have been
+proposed [1, 2]. In order to facilitate the comparison with previous proposed
+methods, we also adopt a quadratic approximation for head losses $\phi_l$,
+
+\begin{equation}
+\phi_l(q_{lt}) = A_lq_{lt}.\left | q_{lt} \right | + B_lq_{lt}
+\end{equation}
+
+\subsection{Pumps}
+
+Following [3], the head increase of a pump $k \in K$ can be written as
+\begin{equation}
+\Psi_k(q_{kt},\omega_{kt}) = \omega_{kt}^{2}\left(C_k+D_k\left(\frac{q_{kt}}{\omega_{kt}}\right)^{\gamma_a}\right)
+\end{equation}
+
+and the power consumption as
+
+\begin{equation}
+\Gamma_k(q_{kt},\omega_{kt}) = \omega_{kt}^{3}\left(E_k+F_k\left(\frac{q_{kt}}{\omega_{kt}} \right ) \right )
+\end{equation}
+
+Here, $\omega_{kt}$ is the relative speed of the pump and pump parameters $C_k$, $D_k$, $E_k$
+and $F_k$ are approximated from operating points provided by the manufacturer.
+Notice that a pump is not always equipped with a variable speed
+drive : in this case, it has to operate at nominal speed ($\omega_{kt} = 1$) and the power
+consumption $\Gamma(q_{kt})$ becomes linear. Thus, we divide the set of pumps
+$K$ into the subsets of fixed speed pumps $K_{FSP}$ and variable speed pumps
+$K_{VSP}$.
+
+Moreover, a pump can be switched on or off. This requires the definition
+of a binary activity indicator $x_k$ which allows firstly to force the
+flow and the
+pump speed to be null when pump is off ($x_k = 0$) and in a suited positive
+interval otherwise ($x_k = 1$) [4] and secondly, to decouple the head between
+the pump end nodes when pump is off [5].
+
+Finally, the head increase 	$\Psi_k(q_{kt})$ for fixed speed pumps is often approximated
+by a quadratic approximation [6, 7, 8] and this is also the case for
+the two case studies I send you\footnote{In the two case studies, we do not have variable speed pumps but I include them in
+the model in order to have a general formulation.}. Thus, we adopt the same relation
+
+\begin{equation}
+\Psi_k(q_{kt}) = A_kq_{kt}^{2} + B_lq_{kt} + C_k
+\end{equation}
+
+\subsection{Valves}
+
+~~~~ Different kind of valves are frequently installed in DWDNs, in particular
+gate valves (GVs), check valves (CVs),
+flow control valves (FCVs) or pressure
+reducing valves (PRVs). Their respective purpose is to force the
+flow to be
+null when the valve is closed, to avoid negative
+flows, to control the
+flow
+through the valve and to create a pressure decrease. For each valve type, a
+valve $v \in V$ can be modeled with two equations,
+
+\begin{equation}
+Q_v^{min}g_v(x_{vt}) \leq q_{vt} \leq Q_v^{max}x_{vt}
+\end{equation}
+
+\begin{table}
+  \centering
+  \begin{tabular}{llll}
+    \hline
+  $A$ & arcs & $N$ & nodes\\
+  $L\subset A$ & pipes & $N_R\subset N$ & tank nodes \\
+  $V\subset A$ & valves & $N_S\subset N$ & source nodes\\
+  $K\subset A$ &pumps& $N_J\subset N$ & junction nodes\\
+  $K_{FSP}\subset K$ & fixed-speed pumps& $t\in[1,T]$ &time periods \\
+  $K_{VSP}\subset K$ & variable-speed pumps & & \\[.5em]
+  $x_{kt}\in\{0,1\}$ & \multicolumn{3}{l}{ activity indicator (binary) of pump $k \in K$ in period $t$}\\
+  $x_{vt}\in\{0,1\}$ & \multicolumn{3}{l}{activity indicator of valve $v\in V$ in period $t$}\\
+  $w_{kt}\in[0,1]$ & \multicolumn{3}{l}{speed of pump $k\in K_{VSP}$ in period $t$}\\
+  $q_{at}\in \mathbb{R}$ & \multicolumn{3}{l}{flow through $a\in A$ in period $t$}\\
+  $h_{nt}\ge 0$ & \multicolumn{3}{l}{hydraulic head at node $n\in N$ in period $t$}\\
+    \hline
+\end{tabular}
+\caption{Summary of notation}
+\label{tab:not}
+\end{table}
+
+\newpage
+
+and
+
+\begin{equation}
+\Delta H_v^{min}(1-x_{vt}) \leq  h_{it}-h_{jt} \leq \Delta H_v^{max}(1-g_v(x_{vt}))
+\end{equation}
+
+with $Q_a^{min} \leq q_{vt} \leq Q_v^{max} , \Delta H_v^{min} \leq  h_{it}-h_{jt} \leq \Delta H_v^{max}$, $g$ a function which depends wheter the valve is either a $GV$ or a $CV$ $(g_v(x_{vt})=x_{vt})$ , or a $FCV$ or a $PRV$ $(g_v(x_{vt})=1-x_{vt})$ and $x_{vt}$ a binary variable which have a different meaning for each type of valve. For a $GV$, when the valve is closed $(x_v=0)$, flow is null and head at both end nodes are decoupled, whereas heads and flow are untouched when the valve is open $(x_v=1)$.
+For a $CV$, with $\Delta H_v^{max} = Q_v^{min}=0$, either the valve is open $(x_{vt}=1$, $ h_{it}-h_{jt}=0 $ and $ q_{vt} \geq 0 )$ or the valve is closed $(x_{vt}=0$, $ h_{it}-h_{jt} \leq 0 $ and $ q_{vt} = 0 )$.
+for a $PRV$, $x_{vt}$ denotes the direction of the flow and constraint 6 forces the pressure to decrease in the flow direction. Finally because the flow is controlled by applying a pressure decrease at the valve level, $FCVs$ are mathematically modeled as $PRVs$, "the difference between both valves types being their control variable" [9]. Notice that for $FCVs$ and $PRVs$, the two equations can be replaced by the non-convex inequality $q_{vt}(hit-hjt) \geq 0$.
+
+
+
+
+\section{Mathematical formulation}
+With the help of notations given Table 1, the Pump Scheduling Problem can be formulated as a MINLP :
+
+\newpage
+
+
+
+\begin{equation}
+min \sum_{t=1}^{T} C_t^{E} \tau_t\sum_{k \in K} \omega_{kt}^3\left(E_k+F_k\left(\frac {q_{kt}}{\omega_{kt}}\right)    \right) + \sum_{t=1}^{T} \sum_{s \in N_S} \sum_{si \in A} C_s^W q_{si} \tau_t
+\end{equation}
+
+\begin{equation}
+s.t.~~~~\sum_{ij \in A} q_{ijt} = \sum_{ji \in A} q_{jit} + D_{jt}, ~~~~~~~~~~~~~~~~~~~~~~~~~~~ \forall t,~~\forall j \in N_J~~~~
+\end{equation}
+
+
+
+\begin{equation}
+Z_j \leq h_{ij} \leq Z_j + P^{max}, ~~~~~~~~~~~~~~~~~ \forall t,~~\forall j \in N_J, ~~D_j^0 > 0
+\end{equation}
+
+
+
+
+\begin{equation}
+\sum_{ir \in A} q_{irt} - \sum_{ri \in A}q_{rit} = \frac {S_r}{\tau_t}(h_{rt}-h_{r(t-1)}), ~~~~~~~~ \forall t,~~\forall r \in N_R
+\end{equation}
+
+\begin{equation}
+h_{r0} = \frac {V_r^0}{S_r} \leq h_{rT}, ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\forall r \in N_R
+\end{equation}
+
+\begin{equation}
+Z_r + \frac{V_r^{min}}{S_r} \leq h_{rt} \leq Z_r + \frac{V_r^{max}}{S_r}, ~~~~~~~~~~~~~~~~~~ \forall t, \forall r \in N_R
+\end{equation}
+
+\begin{equation}
+\sum_{t=1}^T \sum_{si \in A} q_{sit}\tau_t \leq V_s^{lim}, ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \forall t, \forall s \in N_S
+\end{equation}
+
+\begin{equation}
+h_{st} = H_{st},   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\forall t, \forall s \in N_S
+\end{equation}
+
+\begin{equation}
+Q_k^{min}x_{kt} \leq q_{kt} \leq Q_k^{max}x_{kt},  ~~~~~~~~~~~~~~~~~~~~~~~~~ \forall t, \forall k \in K
+\end{equation}
+
+\begin{equation}
+\omega_k^{min}x_{kt} \leq \omega_{kt} \leq x_{kt},   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \forall t, \forall k \in K_{VSP}
+\end{equation}
+
+\begin{equation}
+m_k(1-x_{ijt}) \leq h_{jt}-h_{it}-\Psi_k(q_{ijt},\omega_{ijt}) \leq M_k(1-x_{ijt}), ~~~~~~ \forall t, \forall ij \in K_{VSP}
+\end{equation}
+
+\begin{equation}
+h_{it}-h_{jt} = A_lq_{ijt}\left |q_{ijt}\right |  + B_lq_{ijt} ~~~~~~~~~~~~~~~~~~~~~\forall t, \forall ij \in L
+\end{equation}
+
+\begin{equation}
+Q_v^{min} g_v(x_{vt}) \leq q_{vt} \leq Q_v^{max}x_{vt}   ~~~~~~~~~~~~~~~~~~~~~\forall t, \forall v \in V
+\end{equation}
+
+\begin{equation}
+\Delta H_v^{min}(1-x_{vt}) \leq h_{i_{v}t}-h_{jt} \leq \Delta H_v^{max}(1-g_v(x_{vt})), ~~~~~~~~ \forall t, \forall ij \in V
+\end{equation}
+
+
+
+\newpage
+
+Objective (7) minimizes the total energy cost of pumping and the cost of extraction where $C_t$ denotes the electricity tariff (in \euro{}/kWh) and $C_j^W$ the extraction cost at sources (in \euro{}/$m^3$). Flow conservation is ensured by Contraints (8) at each internal node r \in $N_J$, $D_{rt}$ denotes the demand (in $m^3$) in time period t \in $[1,T]$ and $S_j$ the cross-section (in $m^2$) of the tank. Constraints (9), (11), (12) and (14) are decicated to head constraints in junctions, tanks and sources: for each junction j \in $N_J$, head have to be greater than its altitude $Z_j$ for node with positive demand in order to prevent nonnegative pressures for consumers\footnote{For the case Verleye, I have removed this constraint in order to match with the model described in [8]}. A maximal pressure $P^{max}$ (that I fix to 100 $m$) can also be defined for safety reasons. For each tank r \in $N_R$, the initial one water volume is fixed, we impose that the final water volume is greater than the initial in order to avoid disproportionately pumping costs the following day [3] and otherwise the minimal and maximal water level $V_j^{min}$ and $V_r^{max}$ is limited respectively by safety reasons ans the physical tank size. For each source s \in $N_S$, the head can be fixed at each time because we assume that its water level is not impacted by the operation of the water network due to its size[10]. Moreover, in some cases, the daily extraction at a source can be restricted to be below a threshold $V_s^{max}$ (contraint(13)). Constraint (15) and (16) guarantees that flow and speed lie in the intervals $[Q_k^{min},Q_k^{max}]$ and $[\omega_k^{min},1]$ only when the pump $k \in K$ is active and that flow and speed are null otherwise. Finally, constraints (17 - 20) model the head difference along respectively pumps, pipes and valves.
+
+
+\section{How are organized the CSV files ?}
+
+There is one CSV file that regroup all the Data for each instance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Data dictionnary:
+\\
+Binary variable representing the state of the Pump (1 if ON, 0 if OFF).
+Binary variable representing the state of the Valve (1 if ON, 0 if OFF).
+
+\end{document}

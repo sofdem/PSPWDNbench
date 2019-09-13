@@ -1,0 +1,2 @@
+#Tank;NODE_ID;X_COORDINATE;Y_COORDINATE;Z_COORDINATE;Vol_min;Vol_max;Vol_init;Surface
+Tank;T1;0;0;33;0;490;42;70

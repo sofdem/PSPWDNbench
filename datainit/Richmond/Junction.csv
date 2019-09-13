@@ -1,0 +1,47 @@
+#Junction;NODE_ID;X_COORDINATE;Y_COORDINATE;Z_COORDINATE;TIMESERIE_ID;Water_dem_base;Max_P
+Junction;4;0;0;183;domestic;0;100.0
+Junction;9;0;0;68.85       ;domestic;0;100.0
+Junction;10;0;0;166.42      ;domestic;5.68        ;100.0
+Junction;42;0;0;60;domestic;3.68        ;100.0
+Junction;104;0;0;184;domestic;0;100.0
+Junction;164;0;0;65;domestic;0;100.0
+Junction;164b;0;0;65;domestic;0;100.0
+Junction;175;0;0;65;domestic;0;100.0
+Junction;186;0;0;112.18      ;domestic;0;100.0
+Junction;197;0;0;115;domestic;0;100.0
+Junction;206;0;0;134.99      ;domestic;0;100.0
+Junction;249;0;0;101;domestic;11.3        ;100.0
+Junction;264;0;0;184;domestic;0;100.0
+Junction;284;0;0;186;domestic;0;100.0
+Junction;312;0;0;242;domestic;2.13        ;100.0
+Junction;312b;0;0;242;domestic;0;100.0
+Junction;320;0;0;242;domestic;0;100.0
+Junction;321;0;0;242;domestic;0;100.0
+Junction;321b;0;0;242;domestic;0;100.0
+Junction;325;0;0;242;domestic;3.71        ;100.0
+Junction;353;0;0;185.78      ;domestic;0;100.0
+Junction;364;0;0;217;domestic;0;100.0
+Junction;632;0;0;69;domestic;0;100.0
+Junction;633;0;0;69;domestic;0;100.0
+Junction;634;0;0;139.02      ;domestic;0;100.0
+Junction;635;0;0;139.82      ;domestic;0;100.0
+Junction;636;0;0;139.82      ;domestic;0;100.0
+Junction;637;0;0;140;domestic;1;100.0
+Junction;701;0;0;198.33      ;domestic;.11         ;100.0
+Junction;729;0;0;202.15      ;domestic;0;100.0
+Junction;745;0;0;177;domestic;1.42        ;100.0
+Junction;753;0;0;177;domestic;.1          ;100.0
+Junction;766;0;0;69.7        ;domestic;0;100.0
+Junction;768;0;0;69.59       ;domestic;0;100.0
+Junction;770;0;0;69.39       ;domestic;0;100.0
+Junction;771;0;0;69;domestic;0;100.0
+Junction;112;0;0;184;domestic;0;100.0
+Junction;130;0;0;216.65      ;domestic;16.25       ;100.0
+Junction;196;0;0;70;domestic;0;100.0
+Junction;209;0;0;70;domestic;0;100.0
+Junction;125;0;0;186;domestic;0;100.0
+Junction;774;0;0;188;domestic;0;100.0
+Junction;201;0;0;69;domestic;0;100.0
+Junction;201b;0;0;69;domestic;0;100.0
+Junction;777;0;0;100;constant;-9.16       ;100.0
+Junction; Reservoir_E;0;0;203.01;domestic;0;100.0

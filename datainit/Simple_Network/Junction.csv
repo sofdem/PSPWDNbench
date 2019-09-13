@@ -1,0 +1,3 @@
+#Junction;NODE_ID;X_COORDINATE;Y_COORDINATE;Z_COORDINATE;TIMESERIE_ID;Water_dem_base;Max_P
+Junction;J1;0;0;0;Peak1;158;100.0
+Junction;J2;0;0;0;Peak1;0;100.0

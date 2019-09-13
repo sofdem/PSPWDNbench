@@ -1,0 +1,4 @@
+#Source;NODE_ID;X_COORDINATE;Y_COORDINATE;Z_COORDINATE;TIMESERIE_ID;Max_wd;Cost_wd
+Source;R1;0;0;3.048;constant;inf;0.0
+Source;R2;0;0;3.048;constant;inf;0.0
+Source;R3;0;0;3.048;constant;inf;0.0
